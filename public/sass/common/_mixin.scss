@@ -1,0 +1,30 @@
+@import "./const";
+// calc width
+@mixin w($value) {
+  width: #{$value/$width * 100%};
+}
+
+// calc height
+@mixin h($value) {
+  height: #{$value/$height * 100%};
+}
+
+// calc left
+@mixin l($value) {
+  left: #{$value/$width * 100%};
+}
+
+// calc right
+@mixin r($value) {
+  right: #{$value/$width * 100%}
+}
+
+// calc top
+@mixin t($value) {
+  top: #{$value/$height * 100%}
+}
+
+// calc bottom
+@mixin b($value) {
+  bottom: #{$value/$height * 100%}
+}

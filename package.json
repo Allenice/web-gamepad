@@ -1,4 +1,14 @@
 {
   "name": "web-gamepad",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "private": true,
+  "main": "public/js/main.js",
+  "devDependencies": {
+    "grunt": ">=0.4.5",
+    "grunt-contrib-watch": ">=0.6.1",
+    "grunt-contrib-requirejs": ">=0.4.4"
+  },
+  "dependencies": {
+
+  }
 }

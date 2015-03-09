@@ -96,52 +96,6 @@ html {
   margin-left: #{50/$width * 100%};
 }
 
-//.black-bg {
-//  position: absolute;
-//  border-radius: 50%;
-//  background: #000;
-//}
-
-//.pad-bg {
-//  @include w(300);
-//  @include h(300);
-//  @include l(50);
-//  @include t(180);
-//}
-//
-//.pad-up,
-//.pad-down,
-//.pad-left,
-//.pad-right{
-//  position: absolute;
-//  width: 25%;
-//  height: 25%;
-//  background-color: #555;
-//  @include background-image(linear-gradient(to top, #0e79cc, #43beeb));
-//}
-
-//.pad-up {
-//  left: 37.5%;
-//  top: 8%
-//}
-//
-//.pad-down {
-//  left: 37.5%;
-//  bottom: 8%;
-//}
-//
-//.pad-left {
-//  left: 8%;
-//  top: 37.5%
-//}
-//
-//.pad-right {
-//  right: 8%;
-//  top: 37.5%;
-//}
-
-
-
 .left-analogue-bg,
 .right-analogue-bg {
   position: absolute;
