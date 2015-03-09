@@ -50,6 +50,9 @@
       } else {
         this.$gamepad.css('margin-top',0);
       }
+
+      // calc base font size (height:360px = 100%)
+      $('html,body').css('font-size', (gamepadHeight/360 * 100) + '%');
     }
   };
 

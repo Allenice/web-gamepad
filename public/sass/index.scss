@@ -1,4 +1,15 @@
 @import "compass/css3";
+@import "common/mixin";
+
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-user-select: none;   /* 禁止选中文本（如无文本选中需求，此为必选项） */
+  user-select: none;
+}
+
+a, img {
+  -webkit-touch-callout: none; /* 禁止长按链接与图片弹出菜单 */
+}
 
 html {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -21,11 +32,13 @@ html {
   margin: 0 auto;
   position: relative;
   background: image-url("bg.png") #000 repeat;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000;
 }
 
 .logo {
-  font-size: 48px;
-  line-height: 64px;
+  font-size: $f48;
+  line-height: $f64;
   margin: 0;
   color: #fff;
   text-shadow: 2px 2px 1px #000;
@@ -33,65 +46,166 @@ html {
 
 .black-btn {
   position: absolute;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
+  @include w(120);
+  @include h(120);
+  line-height: $f60;
   border: 2px solid #000;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: $f24;
   color: #fff;
   text-shadow: 1px 1px 1px #000;
   @include background-image(linear-gradient(to top, #222, #666));
 }
 
 .left-shoulder {
-  left: 25px;
-  top: 25px;
+  @include r(220);
+  @include b(50);
 }
 
 .left-shoulder-bottom {
-  left: 110px;
-  top: 25px;
+  @include r(50);
+  @include b(50);
 }
 
 .right-shoulder {
-  right: 110px;
-  top: 25px;
+  @include r(220);
+  @include t(50);
 }
 
 .right-shoulder-bottom {
-  right: 25px;
-  top: 25px;
+  @include r(50);
+  @include t(50);
 }
 
 .select,
 .start {
-  width: 75px;
-  height: 25px;
-  line-height: 25px;
+  @include w(150);
+  @include h(50);
+  line-height: $f25;
   left: 50%;
   top: 50%;
-  font-size: 14px;
-  border-radius: 25px;
+  font-size: $f14;
+  border-radius: 40px;
 }
 
 .select {
-  margin-left: -100px;
+  margin-left: -#{200/$width * 100%};
 }
 
 .start {
-  margin-left: 25px;
+  margin-left: #{50/$width * 100%};
 }
 
-.black-bg {
+//.black-bg {
+//  position: absolute;
+//  border-radius: 50%;
+//  background: #000;
+//}
+
+//.pad-bg {
+//  @include w(300);
+//  @include h(300);
+//  @include l(50);
+//  @include t(180);
+//}
+//
+//.pad-up,
+//.pad-down,
+//.pad-left,
+//.pad-right{
+//  position: absolute;
+//  width: 25%;
+//  height: 25%;
+//  background-color: #555;
+//  @include background-image(linear-gradient(to top, #0e79cc, #43beeb));
+//}
+
+//.pad-up {
+//  left: 37.5%;
+//  top: 8%
+//}
+//
+//.pad-down {
+//  left: 37.5%;
+//  bottom: 8%;
+//}
+//
+//.pad-left {
+//  left: 8%;
+//  top: 37.5%
+//}
+//
+//.pad-right {
+//  right: 8%;
+//  top: 37.5%;
+//}
+
+
+
+.left-analogue-bg,
+.right-analogue-bg {
   position: absolute;
   border-radius: 50%;
   background: #000;
+  @include w(300);
+  @include h(300);
+  @include b(20);
+  @include box-sizing(border-box);
+
+  div {
+    width: 70%;
+    height: 70%;
+    margin-left: 15%;
+    margin-top: 15%;
+    background-color: red;
+    border-radius: 50%;
+    @include box-sizing(border-box);
+    @include background-image(linear-gradient(to top, #ef0909, #f47474));
+  }
 }
 
-.pad-bg {
-  width: 150px;
-  height: 150px;
-  left: 25px;
-  top: 90px;
+.left-analogue-bg {
+  @include w(350);
+  @include h(350);
+  @include t(50);
+  @include l(30);
+}
+
+.right-analogue-bg {
+  @include l(140);
+}
+
+.face-btn {
+  position: absolute;
+  @include w(120);
+  @include h(120);
+  line-height: $f60;
+  font-size: $f30;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background-color: #444;
+}
+
+.face1 {
+  @include background-image(linear-gradient(to top, #a1ca12, #e1f195));
+  @include t(375);
+  @include r(150);
+}
+
+.face2 {
+  @include background-image(linear-gradient(to top, #ef0909, #f47474));
+  @include t(275);
+  @include r(50);
+}
+
+.face3 {
+  @include background-image(linear-gradient(to top, #0e79cc, #43beeb));
+  @include t(275);
+  @include r(250);
+}
+
+.face4 {
+  @include background-image(linear-gradient(to top, #efa80e, #eed58a));
+  @include t(175);
+  @include r(150);
 }
