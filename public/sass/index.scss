@@ -1,0 +1,97 @@
+@import "compass/css3";
+
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 16px;
+  left: 0;
+  top: 0;
+  background: #000;
+}
+
+.gamepad {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  background: image-url("bg.png") #000 repeat;
+}
+
+.logo {
+  font-size: 48px;
+  line-height: 64px;
+  margin: 0;
+  color: #fff;
+  text-shadow: 2px 2px 1px #000;
+}
+
+.black-btn {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000;
+  @include background-image(linear-gradient(to top, #222, #666));
+}
+
+.left-shoulder {
+  left: 25px;
+  top: 25px;
+}
+
+.left-shoulder-bottom {
+  left: 110px;
+  top: 25px;
+}
+
+.right-shoulder {
+  right: 110px;
+  top: 25px;
+}
+
+.right-shoulder-bottom {
+  right: 25px;
+  top: 25px;
+}
+
+.select,
+.start {
+  width: 75px;
+  height: 25px;
+  line-height: 25px;
+  left: 50%;
+  top: 50%;
+  font-size: 14px;
+  border-radius: 25px;
+}
+
+.select {
+  margin-left: -100px;
+}
+
+.start {
+  margin-left: 25px;
+}
+
+.black-bg {
+  position: absolute;
+  border-radius: 50%;
+  background: #000;
+}
+
+.pad-bg {
+  width: 150px;
+  height: 150px;
+  left: 25px;
+  top: 90px;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="full-screen" content="yes"/>
+  <meta name="screen-orientation" content="landscape"/>
+  <meta name="x5-fullscreen" content="true"/>
+  <meta name="360-fullscreen" content="true"/>
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+  <title>Web Gamepad</title>
+  <link rel="shortcut icon" type="image/png" href="/images/icon.png">
+  <link rel="stylesheet" href="http://cdn.bootcss.com/normalize/3.0.2/normalize.min.css"/>
+  <link rel="stylesheet" href="css/index.css"/>
+  <link rel="stylesheet" href="css/w480.css" media="screen and (min-width: 480px) and (max-width: 539px)"/>
+  <link rel="stylesheet" href="css/w540.css" media="screen and (min-width: 540px) and (max-width: 599px)"/>
+  <link rel="stylesheet" href="css/w600.css" media="screen and (min-width: 600px) and (max-width: 670px)"/>
+  <link rel="stylesheet" href="css/whide.css" media="screen and (min-width: 671px), (max-width: 479px)"/>
+</head>
+<body>
+
+<div id="container" class="container">
+  <div class="gamepad" id="gamepad">
+
+    <h1 class="logo">WGP</h1>
+
+    <div class="black-btn left-shoulder">L1</div>
+    <div class="black-btn left-shoulder-bottom">L2</div>
+    <div class="black-btn right-shoulder">R1</div>
+    <div class="black-btn right-shoulder-bottom">R2</div>
+
+    <div class="black-btn select">SELECT</div>
+    <div class="black-btn start">START</div>
+
+    <div class="black-bg pad-bg"></div>
+
+    <div class="black-bg left-analogue-bg"></div>
+    <div class="black-bg right-analogue-bg"></div>
+
+  </div>
+</div>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
