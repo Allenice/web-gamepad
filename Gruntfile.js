@@ -6,7 +6,7 @@ module.exports = function (grunt) {
         options: {
           baseUrl: "public/js/",
           name: 'app/app',
-          // optimize: 'none',
+          optimize: 'none',
           out: 'public/js/index.js'
         }
       }

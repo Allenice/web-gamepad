@@ -9,6 +9,8 @@
   <meta name="360-fullscreen" content="true"/>
   <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <title>Web Gamepad</title>
+  <!--<script src="http://100.84.85.122:8081/target/target-script-min.js#anonymous"></script>-->
+
   <link rel="shortcut icon" type="image/png" href="/images/icon.png">
   <link rel="stylesheet" href="http://cdn.bootcss.com/normalize/3.0.2/normalize.min.css"/>
   <link rel="stylesheet" href="css/index.css"/>
@@ -16,29 +18,32 @@
 <body>
 
 <div id="container" class="container">
+
+  <div class="tips" id="tips">游戏连接中...</div>
+
   <div class="gamepad" id="gamepad">
 
     <h1 class="logo">WGP</h1>
 
-    <div class="black-btn left-shoulder">L1</div>
-    <div class="black-btn left-shoulder-bottom">L2</div>
-    <div class="black-btn right-shoulder">R1</div>
-    <div class="black-btn right-shoulder-bottom">R2</div>
+    <div class="black-btn left-shoulder" data-role="button" data-index="4">L1</div>
+    <div class="black-btn left-shoulder-bottom" data-role="button" data-index="6">L2</div>
+    <div class="black-btn right-shoulder" data-role="button" data-index="5">R1</div>
+    <div class="black-btn right-shoulder-bottom" data-role="button" data-index="7">R2</div>
 
-    <div class="black-btn select">SELECT</div>
-    <div class="black-btn start">START</div>
+    <div class="black-btn select" data-role="button" data-index="8">SELECT</div>
+    <div class="black-btn start" data-role="button" data-index="9">START</div>
 
-    <div class="left-analogue-bg">
-      <div class="left-analogue"></div>
+    <div class="left-stick-bg">
+      <div class="left-stick" id="left-stick" data-index="10"></div>
     </div>
-    <div class="right-analogue-bg">
-      <div class="right-analogue"></div>
+    <div class="right-stick-bg">
+      <div class="right-stick" id="right-stick" data-index="11"></div>
     </div>
 
-    <div class="face-btn face1">A</div>
-    <div class="face-btn face2">B</div>
-    <div class="face-btn face3">X</div>
-    <div class="face-btn face4">Y</div>
+    <div class="face-btn face1" data-role="button" data-index="0">1</div>
+    <div class="face-btn face2" data-role="button" data-index="1">2</div>
+    <div class="face-btn face3" data-role="button" data-index="2">3</div>
+    <div class="face-btn face4" data-role="button" data-index="3">4</div>
 
   </div>
 </div>

@@ -26,6 +26,12 @@ html {
   background: #000;
 }
 
+.tips {
+  color: #fff;
+  position: relative;
+  top: 40%;
+}
+
 .gamepad {
   width: 100%;
   height: 100%;
@@ -34,6 +40,7 @@ html {
   background: image-url("bg.png") #000 repeat;
   color: #fff;
   text-shadow: 1px 1px 1px #000;
+  display: none;
 }
 
 .logo {
@@ -96,8 +103,8 @@ html {
   margin-left: #{50/$width * 100%};
 }
 
-.left-analogue-bg,
-.right-analogue-bg {
+.left-stick-bg,
+.right-stick-bg {
   position: absolute;
   border-radius: 50%;
   background: #000;
@@ -107,6 +114,9 @@ html {
   @include box-sizing(border-box);
 
   div {
+    position: relative;
+    left: 0;
+    top: 0;
     width: 70%;
     height: 70%;
     margin-left: 15%;
@@ -118,14 +128,14 @@ html {
   }
 }
 
-.left-analogue-bg {
+.left-stick-bg {
   @include w(350);
   @include h(350);
   @include t(50);
   @include l(30);
 }
 
-.right-analogue-bg {
+.right-stick-bg {
   @include l(140);
 }
 

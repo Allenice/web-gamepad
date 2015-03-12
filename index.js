@@ -4,7 +4,8 @@
 
 var http = require('http'),
   fs = require('fs'),
-  mime = require('./server/mime.js'),
+  mime = require('./server/mime'),
+  socket = require('./server/socket'),
   server;
 
 
@@ -27,6 +28,8 @@ server = http.createServer(function (req, res) {
     res.end(data);
   })
 });
+
+socket(server);
 
 server.listen(3000);
 console.log('server start: http://localhost:3000');
