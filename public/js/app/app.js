@@ -79,13 +79,14 @@ define([
       // 移动摇杆
       $('#left-stick, #right-stick').on('touchstart', function (e) {
         // 记录开始按下的点
-        _this.pointCache[$(this).data('index')] = utils.getPoint(e.touches[0]);
+        _this.pointCache[$(this).data('index')] = utils.getPoint(e.targetTouches[0]);
+
       }).on('touchmove', function (e) {
-        
+
         var $this = $(this),
             index = $this.data('index'),
             prevPoint = _this.pointCache[index],
-            curPoint = utils.getPoint(e.touches[0]),
+            curPoint = utils.getPoint(e.targetTouches[0]),
             delta = utils.getDelta(prevPoint, curPoint),
             prePos = {x: parseInt($this.css('left')), y: parseInt($this.css('top'))},
             curPos = {x: prePos.x + delta.x, y: prePos.y + delta.y},

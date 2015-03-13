@@ -19,11 +19,12 @@ module.exports = function (server) {
 
       if(data.gamepad.index < 0) {
         gameSockets[uid].gamepadCount++;
-        socket.gamepadIndex = data.gamepad.index = gameSockets[uid].gamepadCount -1;
+       data.gamepad.index = gameSockets[uid].gamepadCount -1;
         socket.emit('index-created', {index: data.gamepad.index});
       }
+      socket.gamepadIndex = data.gamepad.index;
 
-      // 告知游戏已连接到手柄
+        // 告知游戏已连接到手柄
       gameSockets[uid].emit('gamepad-connect', data.gamepad);
       console.log('gamepad connected', data.gamepad.index);
     } else {

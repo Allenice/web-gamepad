@@ -3,16 +3,17 @@
 * */
 
 var http = require('http'),
+  path = require('path'),
   fs = require('fs'),
-  mime = require('./server/mime'),
-  socket = require('./server/socket'),
+  mime = require('./mime'),
+  socket = require('./socket'),
   server;
 
 
 server = http.createServer(function (req, res) {
   var url = req.url === '/' ? '/index.html' : req.url.split('?')[0],
     ext = url.substr(url.lastIndexOf('.') + 1, url.length),
-    filePath = __dirname + '/public' + url;
+    filePath = path.join(__dirname, '../public'+ url);
 
   console.log(req.method + ':', url);
   fs.readFile(filePath, function (err, data) {
