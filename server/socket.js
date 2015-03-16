@@ -25,7 +25,7 @@ module.exports = function (server) {
       socket.gamepadIndex = data.gamepad.index;
 
         // 告知游戏已连接到手柄
-      gameSockets[uid].emit('gamepad-connect', data.gamepad);
+      gameSockets[uid].emit('gamepad-connected', data.gamepad);
       console.log('gamepad connected', data.gamepad.index);
     } else {
       // 没有对应的游戏
@@ -72,10 +72,10 @@ module.exports = function (server) {
     // 连接断开
     socket.on('disconnect', function () {
       if(socket.clientType === 'game') {
-        socket.to(roomId).broadcast.emit('game-disconnect');
+        socket.to(roomId).broadcast.emit('game-disconnected');
         delete gameSockets[uid];
       } else {
-        gameSockets[uid] && gameSockets[uid].emit('gamepad-disconnect', {index: socket.gamepadIndex});
+        gameSockets[uid] && gameSockets[uid].emit('gamepad-disconnected', {index: socket.gamepadIndex});
         console.log('gamepad disconnect', socket.gamepadIndex);
       }
     })

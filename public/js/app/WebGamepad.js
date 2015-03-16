@@ -87,7 +87,7 @@ define([
       console.log('index-created', data);
     });
 
-    socket.on('game-disconnect', function () {
+    socket.on('game-disconnected', function () {
       sessionStorage.removeItem(uid);
       $('#tips').html('游戏连接失败，请刷新页面重新连接！').show();
       $('#gamepad').hide();

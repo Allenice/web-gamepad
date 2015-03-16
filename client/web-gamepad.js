@@ -57,6 +57,18 @@
       return Object.prototype.toString.call(arr) === '[object Array]';
     },
 
+    uuid: (function() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return function() {
+        return s4() + s4() + '' + s4() + '' + s4() + '' +
+          s4() + '' + s4() + s4() + s4();
+      };
+    })(),
+
     extend: function (target/*,source...*/) {
       var length = arguments.length;
 
@@ -72,6 +84,17 @@
     }
   }
 
+  var uid = 'u' + utils.uuid(),
+    qrcodeSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=',
+    socketServer;
+
+  // 存储已连接的手柄
+  WebGamepad.gamepads = [];
+
+  // 获取连接二维码
+  WebGamepad.getQrcode = function () {
+    return qrcodeSrc;
+  };
   // 版本
   WebGamepad.VERSION = '0.0.1';
 
@@ -140,12 +163,13 @@
 
   // 触发事件
   Events.trigger = function (name) {
-    var args = arguments;
+    var _this = this,
+        args = arguments;
     if(this._callbacks) {
       for(var key in this._callbacks) {
         if(key === name && utils.isArray(this._callbacks[key])) {
           this._callbacks[key].forEach(function(callback) {
-            callback.apply(this, utils.slice.call(args, 1));
+            callback.apply(_this, utils.slice.call(args, 1));
           });
         }
       }
@@ -164,7 +188,24 @@
   var GamepadButon = WebGamepad.GamepadButton = function () {};
 
   utils.extend(GamepadButon.prototype, Events, {
-    value: 0
+    value: 0,
+    oldValue: 0,
+    gamepad: null,
+
+    setValue: function (value) {
+      this.oldValue = this.value;
+      this.value = value;
+
+      if(this.value === 1 && this.oldValue === 0) {
+        this.trigger('pressed');
+        WebGamepad.trigger('gamepad-update', this.gamepad);
+      }
+
+      if(this.value === 0 && this.oldValue === 1) {
+        this.trigger('released');
+        WebGamepad.trigger('gamepad-update', this.gamepad);
+      }
+    }
   });
 
   /*
@@ -175,7 +216,18 @@
   var GamepadAxes = WebGamepad.GamepadAxes = function(){};
 
   utils.extend(GamepadAxes.prototype, Events, {
-    value: 0
+    value: 0,
+    oldValue: 0,
+
+    setValue: function (value) {
+      this.oldValue = this.value;
+      this.value = value;
+
+      if(this.value != this.oldValue) {
+        this.trigger('update');
+        WebGamepad.trigger('gamepad-update', this.gamepad);
+      }
+    }
   });
 
   /*
@@ -184,41 +236,228 @@
   * */
 
   var Gamepad = WebGamepad.Gamepad = function(){
+
+    this.id = '';
+
+    // 用于区分手柄
+    this.index = 0;
+
+    // 按钮
+    this.buttons = [];
+
+    // 上一次状态更新的时间
+    this.timestamp =  new Date().getTime(),
+
+    // 轴
+    this.axes = [];
+
     // 初始化按钮和轴
     for(var i = 0; i < WebGamepad.TYPICAL_BUTTON_COUNT; i ++) {
-      this.buttons.push(new GamepadButon());
+      var button = new GamepadButon();
+      button.gamepad = this;
+      this.buttons.push(button);
     }
 
     for(var i = 0; i < WebGamepad.TYPICAL_AXES_COUNT; i ++) {
-      this.axes.push(new GamepadAxes());
+      var axes = new GamepadAxes();
+      axes.gamepad = this;
+      this.axes.push(axes);
     }
   };
 
   utils.extend(Gamepad.prototype, Events, {
-    id: '',
-
-    // 用于区分手柄
-    index: 0,
-
-    // 上一次状态更新的时间
-    timestamp: new Date().getTime(),
-
-    // 摇杆
-    axes: [],
-
-    // 按钮
-    buttons: [],
 
     // 更新状态
     update: function (gamepadData) {
-//      this.id = gamepadData.id;
-//      this.index = gamepadData.index;
-//      this.timestamp = gamepadData.timestamp;
-//      this.axes = gamepadData.axes.map(function(axes) {
-//        return
-//      });
+      this.id = gamepadData.id;
+      this.index = gamepadData.index;
+      this.timestamp = gamepadData.timestamp;
+
+      this.buttons.forEach(function (button, index) {
+        var btn = gamepadData.buttons[index],
+            value = typeof btn === 'object' ? btn.value : btn;
+
+        if(typeof value != 'undefined') {
+          button.setValue(value);
+        }
+      });
+
+      this.axes.forEach(function (axes, index) {
+        var value = gamepadData.axes[index];
+
+        if(typeof value != 'undefined') {
+          axes.setValue(value);
+        }
+      });
+
     }
   });
+
+  // 有手柄连接
+  function onGamepadConnected(data) {
+    var gamepad = new WebGamepad.Gamepad();
+    gamepad.update(data);
+    WebGamepad.gamepads[gamepad.index] = gamepad;
+    WebGamepad.trigger('gamepad-connected', gamepad);
+  }
+
+  // 手柄断开连接
+  function onGamepadDisconnected(data) {
+    var gamepad = WebGamepad.gamepads[data.index];
+    WebGamepad.gamepads[data.index] = void 0;
+    WebGamepad.trigger('gamepad-disconnected', gamepad);
+  }
+
+  // 手柄状态更新
+  function onGamepadUpdate(data) {
+    var gamepad = WebGamepad.gamepads[data.index];
+    gamepad.update(data);
+  }
+
+
+  /*
+  * 连接真实手柄
+  * ------------
+  * */
+
+  var gamepadSupport = {
+    ticking: false,
+
+    init: function () {
+      var gamepadSupportAvailable = navigator.getGamepads ||
+        !!navigator.webkitGetGamepads ||
+        !!navigator.webkitGamepads;
+
+      if (!gamepadSupportAvailable) {
+        // 浏览器不支持手柄
+      } else {
+        // 判断是否支持 gamepadconnected/gamepaddisconnected 事件
+        if ('ongamepadconnected' in window) {
+          window.addEventListener('gamepadconnected',
+            gamepadSupport.onGamepadConnect, false);
+          window.addEventListener('gamepaddisconnected',
+            gamepadSupport.onGamepadDisconnect, false);
+        } else {
+          // 如果不支持这两个事件就一直轮询查看手柄连接状态
+          gamepadSupport.startPolling();
+        }
+      }
+    },
+
+    // 手柄连接
+    onGamepadConnect: function (event) {
+      onGamepadConnected(event.gamepad);
+      gamepadSupport.startPolling();
+    },
+
+    // 手柄断开连接，如果没有真实手柄连接，停止轮询
+    onGamepadDisconnect: function (event) {
+      var gamepads = WebGamepad.gamepads.slice(0,4),
+          flag = true;
+
+      onGamepadDisconnected(event.gamepad);
+
+      for(var i = 0; i < gamepads.length; i++) {
+        if(gamepads[i]) {
+          flag = false;
+          break;
+        }
+      }
+
+      if(flag) gamepadSupport.stopPolling();
+    },
+
+    startPolling: function () {
+      if (!gamepadSupport.ticking) {
+        gamepadSupport.ticking = true;
+        gamepadSupport.tick();
+      }
+    },
+
+    stopPolling: function() {
+      gamepadSupport.ticking = false;
+    },
+
+    tick: function () {
+      gamepadSupport.pollStatus();
+      gamepadSupport.scheduleNextTick();
+    },
+
+    scheduleNextTick: function () {
+      if (gamepadSupport.ticking) {
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(gamepadSupport.tick);
+        } else if (window.mozRequestAnimationFrame) {
+          window.mozRequestAnimationFrame(gamepadSupport.tick);
+        } else if (window.webkitRequestAnimationFrame) {
+          window.webkitRequestAnimationFrame(gamepadSupport.tick);
+        }
+      }
+    },
+
+    // 轮询手柄连接状态
+    pollStatus: function () {
+      var rawGamepads =
+        (navigator.getGamepads && navigator.getGamepads()) ||
+        (navigator.webkitGetGamepads && navigator.webkitGetGamepads());
+
+      for(var i = 0; i < rawGamepads.length; i++) {
+        var data = rawGamepads[i];
+
+        // 如果是 undefined, 继续检查下一个
+        if(!data) {
+          if(WebGamepad.gamepads[i]) {
+            onGamepadDisconnected(WebGamepad.gamepads[i]);
+
+          }
+          continue;
+        };
+
+        // 如果手柄已经添加到 WebGamepad.gamepads 的话，更新数据，否则是新连接的手柄
+        if(WebGamepad.gamepads[data.index]) {
+          WebGamepad.gamepads[data.index].update(data);
+        } else {
+          onGamepadConnected(data);
+        }
+      }
+    }
+
+  };
+
+  /*
+  * 手柄连接相关
+  * -----------
+  * */
+
+  // 监听 gamepad 连接
+  WebGamepad.listen = function (options) {
+    socketServer = options.socketServer;
+    qrcodeSrc = qrcodeSrc += (socketServer + '?uid=' + uid);
+
+    var socket = io.connect(socketServer);
+
+    // 连接到 socket 服务器
+    socket.on('server-connected', function (data) {
+      socket.emit('connected', {uid: uid});
+    });
+
+    // 有手柄连接到游戏
+    socket.on('gamepad-connected', function (data) {
+      onGamepadConnected(data);
+    });
+
+    // 手柄状态更新
+    socket.on('gamepad-update', function (data) {
+      onGamepadUpdate(data);
+    });
+
+    // 手柄断开连接
+    socket.on('gamepad-disconnected', function (data) {
+      onGamepadDisconnected(data);
+    });
+
+    gamepadSupport.init();
+  };
 
    // export to global
   return WebGamepad;

@@ -11,9 +11,10 @@ var http = require('http'),
 
 
 server = http.createServer(function (req, res) {
-  var url = req.url === '/' ? '/index.html' : req.url.split('?')[0],
-    ext = url.substr(url.lastIndexOf('.') + 1, url.length),
-    filePath = path.join(__dirname, '../public'+ url);
+  var pathname = req.url.split('?')[0],
+      url = pathname === '/' ? '/index.html' : pathname,
+      ext = url.substr(url.lastIndexOf('.') + 1, url.length),
+      filePath = path.join(__dirname, '../public'+ url);
 
   console.log(req.method + ':', url);
   fs.readFile(filePath, function (err, data) {
