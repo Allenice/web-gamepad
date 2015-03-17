@@ -44,6 +44,7 @@ define([
 
   // 手柄对象
   WebGamepad.gamepad = (function () {
+    var id = 'WEB GAMEPAD (version: 0.0.1)';
     // 初始化按钮的值
     var buttons = [],
         index = parseInt(sessionStorage.getItem(uid)) || -1;
@@ -51,9 +52,13 @@ define([
       buttons.push(0);
     }
 
+    if(index != -1) {
+      id += '(index: '+ index +')';
+    }
+
     return {
       // 手柄描述
-      id: 'WEB GAMEPAD (version: 0.0.1)',
+      id: id,
 
       // 用于区分手柄
       index: index,
@@ -83,6 +88,7 @@ define([
     // 从服务器那里获得手柄的 index
     socket.on('index-created', function (data) {
       WebGamepad.gamepad.index = data.index;
+      WebGamepad.gamepad.id = WebGamepad.gamepad.id + '(index: '+ data.index +')';
       sessionStorage.setItem(uid, data.index)
       console.log('index-created', data);
     });

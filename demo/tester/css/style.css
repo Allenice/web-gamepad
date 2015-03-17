@@ -1,0 +1,66 @@
+body {
+  color: #3a3a3a;
+}
+
+.tips {
+  background-color: #f1f1f1;
+  color: #666666;
+  font-size: 14px;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.qrcode {
+  display: block;
+  width: 150px;
+  height: 150px;
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  border: 1px solid #ccc;
+  background: #ccc;
+}
+
+.id {
+  border-bottom: 1px solid #E5E190;
+  padding-bottom: 10px;
+  color: rgb(0, 187, 255);
+}
+
+.id span {
+  color: rgb(255, 97, 0);
+  padding: 0 10px;
+  font-size: 28px;
+}
+
+ul {
+  width: 80%;
+  list-style: none;
+  overflow: hidden;
+}
+
+li {
+  padding: 5px 25px;
+  float: left;
+  margin: 10px 10px 0 0;
+  background: #ccc;
+}
+
+li label {
+  font-size: 14px;
+  display: block;
+  line-height: 19px;
+}
+
+li value {
+  line-height: 25px;
+}
+
+li.active {
+  background: red;
+  color: #fff;
+}
+
+.axes li {
+  min-width: 150px;
+}

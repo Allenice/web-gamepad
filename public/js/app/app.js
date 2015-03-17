@@ -120,8 +120,8 @@ define([
           _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_BOTTOM] = axes1 > 0 ? 1 : 0;
 
         } else {
-          _this.gamepad.axes[3] = curLeft/_this.stickOffset;
-          _this.gamepad.axes[4] = curTop/_this.stickOffset;
+          _this.gamepad.axes[2] = curLeft/_this.stickOffset;
+          _this.gamepad.axes[3] = curTop/_this.stickOffset;
         }
 
         WebGamepad.update();
@@ -134,9 +134,15 @@ define([
         if($(this).data('index') === WebGamepad.BUTTONS.LEFT_ANALOGUE_STICK) {
           _this.gamepad.axes[0] = 0;
           _this.gamepad.axes[1] = 0;
+
+          // 方向键
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_LEFT] = _this.gamepad.axes[0] < 0 ? 1 : 0;
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_RIGHT] = _this.gamepad.axes[0] > 0 ? 1 : 0;
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_TOP] = _this.gamepad.axes[1] < 0 ? 1 : 0;
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_BOTTOM] = _this.gamepad.axes[1] > 0 ? 1 : 0;
         } else {
+          _this.gamepad.axes[2] = 0;
           _this.gamepad.axes[3] = 0;
-          _this.gamepad.axes[4] = 0;
         }
 
         WebGamepad.update();

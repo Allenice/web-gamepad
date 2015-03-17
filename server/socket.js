@@ -19,7 +19,8 @@ module.exports = function (server) {
 
       if(data.gamepad.index < 0) {
         gameSockets[uid].gamepadCount++;
-       data.gamepad.index = gameSockets[uid].gamepadCount -1;
+        data.gamepad.index = gameSockets[uid].gamepadCount -1;
+        data.gamepad.id = data.gamepad.id + '(index: '+ data.gamepad.index +')';
         socket.emit('index-created', {index: data.gamepad.index});
       }
       socket.gamepadIndex = data.gamepad.index;

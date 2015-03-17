@@ -83,6 +83,7 @@ define('app/WebGamepad',[
 
   // 手柄对象
   WebGamepad.gamepad = (function () {
+    var id = 'WEB GAMEPAD (version: 0.0.1)';
     // 初始化按钮的值
     var buttons = [],
         index = parseInt(sessionStorage.getItem(uid)) || -1;
@@ -90,9 +91,13 @@ define('app/WebGamepad',[
       buttons.push(0);
     }
 
+    if(index != -1) {
+      id += '(index: '+ index +')';
+    }
+
     return {
       // 手柄描述
-      id: 'WEB GAMEPAD (version: 0.0.1)',
+      id: id,
 
       // 用于区分手柄
       index: index,
@@ -122,6 +127,7 @@ define('app/WebGamepad',[
     // 从服务器那里获得手柄的 index
     socket.on('index-created', function (data) {
       WebGamepad.gamepad.index = data.index;
+      WebGamepad.gamepad.id = WebGamepad.gamepad.id + '(index: '+ data.index +')';
       sessionStorage.setItem(uid, data.index)
       console.log('index-created', data);
     });
@@ -268,8 +274,8 @@ define('app/app',[
           _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_BOTTOM] = axes1 > 0 ? 1 : 0;
 
         } else {
-          _this.gamepad.axes[3] = curLeft/_this.stickOffset;
-          _this.gamepad.axes[4] = curTop/_this.stickOffset;
+          _this.gamepad.axes[2] = curLeft/_this.stickOffset;
+          _this.gamepad.axes[3] = curTop/_this.stickOffset;
         }
 
         WebGamepad.update();
@@ -282,9 +288,15 @@ define('app/app',[
         if($(this).data('index') === WebGamepad.BUTTONS.LEFT_ANALOGUE_STICK) {
           _this.gamepad.axes[0] = 0;
           _this.gamepad.axes[1] = 0;
+
+          // 方向键
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_LEFT] = _this.gamepad.axes[0] < 0 ? 1 : 0;
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_RIGHT] = _this.gamepad.axes[0] > 0 ? 1 : 0;
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_TOP] = _this.gamepad.axes[1] < 0 ? 1 : 0;
+          _this.gamepad.buttons[WebGamepad.BUTTONS.PAD_BOTTOM] = _this.gamepad.axes[1] > 0 ? 1 : 0;
         } else {
+          _this.gamepad.axes[2] = 0;
           _this.gamepad.axes[3] = 0;
-          _this.gamepad.axes[4] = 0;
         }
 
         WebGamepad.update();

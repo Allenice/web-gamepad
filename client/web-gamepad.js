@@ -88,13 +88,6 @@
     qrcodeSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=',
     socketServer;
 
-  // 存储已连接的手柄
-  WebGamepad.gamepads = [];
-
-  // 获取连接二维码
-  WebGamepad.getQrcode = function () {
-    return qrcodeSrc;
-  };
   // 版本
   WebGamepad.VERSION = '0.0.1';
 
@@ -130,6 +123,27 @@
 
   // 轴数量，一个摇杆有两个轴，x 轴和 y 轴，目前支持两个摇杆
   WebGamepad.TYPICAL_AXES_COUNT = 4;
+
+
+  // 存储已连接的手柄
+  WebGamepad.gamepads = [];
+
+  // 浏览器是否支持实体手柄
+  WebGamepad.gamepadSupport = navigator.getGamepads ||
+    !!navigator.webkitGetGamepads ||
+    !!navigator.webkitGamepads;
+
+  // 获取连接二维码
+  WebGamepad.getQrcode = function () {
+    return qrcodeSrc;
+  };
+
+  // 获取已经连接的手柄
+  WebGamepad.getGamepads = function () {
+    return WebGamepad.gamepads.filter(function (gamepad) {
+      return typeof gamepad != 'undefined';
+    });
+  };
 
   /*
   * WebGamepad.GamepadEvent
@@ -196,12 +210,12 @@
       this.oldValue = this.value;
       this.value = value;
 
-      if(this.value === 1 && this.oldValue === 0) {
+      if(this.value > 0.9 && this.oldValue <= 0.1) {
         this.trigger('pressed');
         WebGamepad.trigger('gamepad-update', this.gamepad);
       }
 
-      if(this.value === 0 && this.oldValue === 1) {
+      if(this.value <= 0.1 && this.oldValue > 0.9) {
         this.trigger('released');
         WebGamepad.trigger('gamepad-update', this.gamepad);
       }
@@ -223,7 +237,7 @@
       this.oldValue = this.value;
       this.value = value;
 
-      if(this.value != this.oldValue) {
+      if(Math.round(this.value * 100) != Math.round(this.oldValue * 100)) {
         this.trigger('update');
         WebGamepad.trigger('gamepad-update', this.gamepad);
       }
@@ -293,6 +307,11 @@
     }
   });
 
+  /*
+  * 连接事件相关回调
+  * ----
+  * */
+
   // 有手柄连接
   function onGamepadConnected(data) {
     var gamepad = new WebGamepad.Gamepad();
@@ -324,13 +343,7 @@
     ticking: false,
 
     init: function () {
-      var gamepadSupportAvailable = navigator.getGamepads ||
-        !!navigator.webkitGetGamepads ||
-        !!navigator.webkitGamepads;
-
-      if (!gamepadSupportAvailable) {
-        // 浏览器不支持手柄
-      } else {
+      if (WebGamepad.gamepadSupport) {
         // 判断是否支持 gamepadconnected/gamepaddisconnected 事件
         if ('ongamepadconnected' in window) {
           window.addEventListener('gamepadconnected',
