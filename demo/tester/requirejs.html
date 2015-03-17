@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Web gamepad tester</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<h1>WeGamepad Tester（requirejs demo）</h1>
+<h3>用手机扫描二维码连接手柄，也可以插入实体手柄。</h3>
+<div class="tips">实体手柄连接：按下任意键触发连接，如果连接不上，请重新插入，如果还不行，请重启浏览器。</div>
+<img id="qrcode" class="qrcode" src="" alt=""/>
+
+<div id="container" class="container">
+</div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script>
+<script data-main="js/main.js" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.min.js"></script>
+</body>
+</html>

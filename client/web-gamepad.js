@@ -45,6 +45,7 @@
     root.WebGamepad = factory(root, {}, root.io);
   }
 })(this, function (root, WebGamepad, io) {
+  io = io || window.io;
   /*
   * init
   * -------

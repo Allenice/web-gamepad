@@ -118,6 +118,21 @@
     }
   };
 
+  // amd
+  if(typeof define === 'function' && define.amd) {
+    define(['webgamepad'], function() {
+      return app;
+    });
 
-  app.init();
+    // cmd
+  } else if(typeof define === 'function' && define.cmd){
+    define(function (require, exports, module) {
+      require('webgamepad');
+      app.init();
+      module.exports = app;
+    });
+  } else {
+    app.init();
+  }
+
 })();
