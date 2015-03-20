@@ -44,7 +44,7 @@ define([
 
   // 手柄对象
   WebGamepad.gamepad = (function () {
-    var id = 'WEB GAMEPAD (version: 0.0.1)';
+    var id = 'WEB GAMEPAD (version: 0.1.1)';
     // 初始化按钮的值
     var buttons = [],
         index = parseInt(sessionStorage.getItem(uid)) || -1;

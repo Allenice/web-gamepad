@@ -1,5 +1,5 @@
 /*
-* web-gamepad.js 0.0.1
+* web-gamepad.js 0.1.1
  The MIT License (MIT)
 
  Copyright (c) 2015 Allenice
@@ -87,7 +87,7 @@
     socketServer;
 
   // 版本
-  WebGamepad.VERSION = '0.0.1';
+  WebGamepad.VERSION = '0.1.1';
 
   // 按钮和摇杆对应的索引值
   WebGamepad.BUTTONS = {
