@@ -1,0 +1,70 @@
+.container {
+  width: 854px;
+  height: 480px;
+  background-color: #000;
+  margin: 10px auto;
+  position: relative;
+}
+
+.node {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  position: absolute;
+  left: 420px;
+  top: 240px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #666;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000;
+  border: 1px solid #000;
+}
+
+.qrcode {
+  width: 100px;
+  height: 100px;
+}
+
+.stop {
+  color: #fff;
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+}
+
+.face {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #ffc56a), color-stop(100%, #f1efbc));
+  background-image: -moz-linear-gradient(bottom, #ffc56a, #f1efbc);
+  background-image: -webkit-linear-gradient(bottom, #ffc56a, #f1efbc);
+  background-image: linear-gradient(to top, #ffc56a, #f1efbc);
+}
+
+.face1 {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #a1ca12), color-stop(100%, #e1f195));
+  background-image: -moz-linear-gradient(bottom, #a1ca12, #e1f195);
+  background-image: -webkit-linear-gradient(bottom, #a1ca12, #e1f195);
+  background-image: linear-gradient(to top, #a1ca12, #e1f195);
+}
+
+.face2 {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #ef0909), color-stop(100%, #f47474));
+  background-image: -moz-linear-gradient(bottom, #ef0909, #f47474);
+  background-image: -webkit-linear-gradient(bottom, #ef0909, #f47474);
+  background-image: linear-gradient(to top, #ef0909, #f47474);
+}
+
+.face3 {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #0e79cc), color-stop(100%, #43beeb));
+  background-image: -moz-linear-gradient(bottom, #0e79cc, #43beeb);
+  background-image: -webkit-linear-gradient(bottom, #0e79cc, #43beeb);
+  background-image: linear-gradient(to top, #0e79cc, #43beeb);
+}
+
+.face4 {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #efa80e), color-stop(100%, #eed58a));
+  background-image: -moz-linear-gradient(bottom, #efa80e, #eed58a);
+  background-image: -webkit-linear-gradient(bottom, #efa80e, #eed58a);
+  background-image: linear-gradient(to top, #efa80e, #eed58a);
+}

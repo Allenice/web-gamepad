@@ -67,7 +67,6 @@ module.exports = function (server) {
     // 手柄状态更新
     socket.on('gamepad-update', function (data) {
       gameSockets[uid] && gameSockets[uid].emit('gamepad-update', data);
-      console.log('gamepad-update');
     });
 
     // 连接断开
@@ -77,7 +76,6 @@ module.exports = function (server) {
         delete gameSockets[uid];
       } else {
         gameSockets[uid] && gameSockets[uid].emit('gamepad-disconnected', {index: socket.gamepadIndex});
-        console.log('gamepad disconnect', socket.gamepadIndex);
       }
     })
 

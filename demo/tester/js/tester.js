@@ -3,23 +3,6 @@
  */
 (function () {
 
-  function numberString(number, length) {
-    var str = number + '';
-
-    if(str.length > length) {
-      length = length || 0;
-
-      number = str.substr(0, length);
-      if(number.length < length) {
-        for(var i = number.length; i < length; i++) {
-          number += '0';
-        }
-      }
-    }
-
-    return number;
-  }
-
   var app = {
 
     init: function () {
@@ -40,11 +23,13 @@
         socketServer: 'http://100.84.85.122:3000/'
       });
 
-      WebGamepad.on('gamepad-connected', function (gamepad) {
+      WebGamepad.on('connected', function (gamepad) {
         _this._createGamepad(gamepad);
-      }).on('gamepad-update', function (gamepad) {
+
+      }).on('update', function (gamepad) {
         _this._upateGamepad(gamepad);
-      }).on('gamepad-disconnected', function (gamepad) {
+
+      }).on('disconnected', function (gamepad) {
         _this._removeGamepad(gamepad);
       });
     },
@@ -70,7 +55,7 @@
 
       // axes
       gamepad.axes.forEach(function (axes, index) {
-        $axes.append('<li><label>AXES'+ index +'</label><value>'+ numberString(axes.value, 6) +'</value></li>');
+        $axes.append('<li><label>AXES'+ index +'</label><value>'+ axes.value +'</value></li>');
       });
 
       // buttons
@@ -103,7 +88,7 @@
         } else {
           $li.removeClass('active');
         }
-        $li.find('value').text(numberString(axes.value, 6));
+        $li.find('value').text(axes.value);
       });
 
       gamepad.buttons.forEach(function (button, index) {

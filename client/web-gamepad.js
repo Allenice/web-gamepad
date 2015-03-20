@@ -21,10 +21,7 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
-* https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://www.allenice233.com
 * */
-
-// WebGamepad, WebGamepad.Gamepad, WebGamepad.GamepadButton, WebGamepad.GamepadAxes, WebGamepad.GamepadEvent
 
 (function (root, factory) {
 
@@ -213,12 +210,14 @@
 
       if(this.value > 0.9 && this.oldValue <= 0.1) {
         this.trigger('pressed');
-        WebGamepad.trigger('gamepad-update', this.gamepad);
+        this.gamepad.trigger('update');
+        WebGamepad.trigger('update', this.gamepad);
       }
 
       if(this.value <= 0.1 && this.oldValue > 0.9) {
         this.trigger('released');
-        WebGamepad.trigger('gamepad-update', this.gamepad);
+        this.gamepad.trigger('update');
+        WebGamepad.trigger('update', this.gamepad);
       }
     }
   });
@@ -236,11 +235,12 @@
 
     setValue: function (value) {
       this.oldValue = this.value;
-      this.value = value;
+      this.value = parseFloat(value.toFixed(2));
 
-      if(Math.round(this.value * 100) != Math.round(this.oldValue * 100)) {
+      if(this.value != this.oldValue) {
         this.trigger('update');
-        WebGamepad.trigger('gamepad-update', this.gamepad);
+        this.gamepad.trigger('update');
+        WebGamepad.trigger('update', this.gamepad);
       }
     }
   });
@@ -318,14 +318,14 @@
     var gamepad = new WebGamepad.Gamepad();
     gamepad.update(data);
     WebGamepad.gamepads[gamepad.index] = gamepad;
-    WebGamepad.trigger('gamepad-connected', gamepad);
+    WebGamepad.trigger('connected', gamepad);
   }
 
   // 手柄断开连接
   function onGamepadDisconnected(data) {
     var gamepad = WebGamepad.gamepads[data.index];
     WebGamepad.gamepads[data.index] = void 0;
-    WebGamepad.trigger('gamepad-disconnected', gamepad);
+    WebGamepad.trigger('disconnected', gamepad);
   }
 
   // 手柄状态更新
@@ -445,31 +445,36 @@
 
   // 监听 gamepad 连接
   WebGamepad.listen = function (options) {
+    options = options || {};
     socketServer = options.socketServer;
     qrcodeSrc = qrcodeSrc += (socketServer + '?uid=' + uid);
 
-    var socket = io.connect(socketServer);
+    // 如果配置了 socket 服务器就连接
+    if(socketServer) {
+      var socket = io.connect(socketServer);
 
-    // 连接到 socket 服务器
-    socket.on('server-connected', function (data) {
-      socket.emit('connected', {uid: uid});
-    });
+      // 连接到 socket 服务器
+      socket.on('server-connected', function (data) {
+        socket.emit('connected', {uid: uid});
+      });
 
-    // 有手柄连接到游戏
-    socket.on('gamepad-connected', function (data) {
-      onGamepadConnected(data);
-    });
+      // 有手柄连接到游戏
+      socket.on('gamepad-connected', function (data) {
+        onGamepadConnected(data);
+      });
 
-    // 手柄状态更新
-    socket.on('gamepad-update', function (data) {
-      onGamepadUpdate(data);
-    });
+      // 手柄状态更新
+      socket.on('gamepad-update', function (data) {
+        onGamepadUpdate(data);
+      });
 
-    // 手柄断开连接
-    socket.on('gamepad-disconnected', function (data) {
-      onGamepadDisconnected(data);
-    });
+      // 手柄断开连接
+      socket.on('gamepad-disconnected', function (data) {
+        onGamepadDisconnected(data);
+      });
+    }
 
+    // 实体手柄支持
     gamepadSupport.init();
   };
 

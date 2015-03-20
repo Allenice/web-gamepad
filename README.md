@@ -1,2 +1,2 @@
-# web-game-pad
-A gamepad that run on the web
+# web-gamepad
+web-gamepad 是一个运行在手机浏览器的游戏手柄。
