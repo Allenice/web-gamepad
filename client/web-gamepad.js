@@ -447,7 +447,7 @@
   WebGamepad.listen = function (options) {
     options = options || {};
     socketServer = options.socketServer;
-    qrcodeSrc = qrcodeSrc += (socketServer + '?uid=' + uid);
+    qrcodeSrc = qrcodeSrc + (socketServer + '?uid=' + uid);
 
     // 如果配置了 socket 服务器就连接
     if(socketServer) {
