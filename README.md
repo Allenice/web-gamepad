@@ -1,6 +1,11 @@
 # web-gamepad
 web-gamepad 是一个运行在手机浏览器的游戏手柄。游戏引用 client 里面的 web-gamepad.js,  玩家通过扫描二维码连接手柄。web-gamepad.js 还支持真实手柄。建议使用 web-gamepad 之前，请先阅读 [Web gamepad api](https://dvcs.w3.org/hg/gamepad/raw-file/default/gamepad.html)
 
+## 在线 demo:  
+
+ -  [tester](http://demo.allenice233.com/web-gamepad/demo/tester/);  
+ -  [events](http://demo.allenice233.com/web-gamepad/demo/events/)
+
 ## 安装
 ```bash
 # 克隆代码到本地
@@ -157,8 +162,3 @@ WebGamepad.on('connected', function(gamepad) {
 	});
 });
 ```
-
-在线 demo:  
-
- -  [tester](http://demo.allenice233.com/web-gamepad/demo/tester/);  
- -  [events](http://demo.allenice233.com/web-gamepad/demo/events/)
