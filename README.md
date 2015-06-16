@@ -161,4 +161,8 @@ WebGamepad.on('connected', function(gamepad) {
 		console.log('gamepad update');
 	});
 });
+
+WebGamepad.on('disconnected', function(gamepad) {
+  console.log('gamepad disconnected', gamepad);
+});
 ```

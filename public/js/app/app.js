@@ -173,8 +173,8 @@ define([
       // 更新摇杆能移动的最大距离
       this.stickOffset = this.$rightStick.width() * 0.4 || 50;
 
-      // 设置根元素的字体大小 (height:360px = 100%)
-      $('html,body').css('font-size', (gamepadHeight / 360 * 100) + '%');
+      // 设置根元素的字体大小 (height:360px = 100%) 设计分比率的一半
+      $('html,body').css('font-size', (gamepadHeight / designResolution.height / 2 * 100) + '%');
     }
   };
 

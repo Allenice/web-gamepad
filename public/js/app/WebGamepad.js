@@ -81,6 +81,12 @@ define([
   WebGamepad.connect = function () {
     var socket = WebGamepad.socket = io.connect();
 
+    function showError(msg) {
+      sessionStorage.removeItem(uid);
+      $('#tips').html(msg).show();
+      $('#gamepad').hide();
+    }
+
     socket.on('server-connected', function () {
       socket.emit('connected', {uid: uid, gamepad: WebGamepad.gamepad});
     });
@@ -89,20 +95,23 @@ define([
     socket.on('index-created', function (data) {
       WebGamepad.gamepad.index = data.index;
       WebGamepad.gamepad.id = WebGamepad.gamepad.id + '(index: '+ data.index +')';
-      sessionStorage.setItem(uid, data.index)
+      sessionStorage.setItem(uid, data.index);
       console.log('index-created', data);
     });
 
     socket.on('game-disconnected', function () {
-      sessionStorage.removeItem(uid);
-      $('#tips').html('游戏连接失败，请刷新页面重新连接！').show();
-      $('#gamepad').hide();
+      showError('游戏连接失败，请重新扫描二维码');
     });
     
     socket.on('game-not-found', function () {
-      $('#tips').html('游戏连接失败，找不到游戏！').show();
-      $('#gamepad').hide();
+      showError('游戏不存在，请重新扫描二维码');
     });
+
+    // TODO: 这个事件一直没有触发，不知道是怎么回事
+    socket.on('disconnect', function () {
+      showError('服务器连接已断开');
+    });
+
   };
 
   // 更新手柄状态

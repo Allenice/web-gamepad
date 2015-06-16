@@ -472,6 +472,15 @@
       socket.on('gamepad-disconnected', function (data) {
         onGamepadDisconnected(data);
       });
+
+      // 如果与服务器断开连接，则触发 web 手柄的 disconnected 事件
+      socket.on('disconnect', function () {
+        for(var i = 4; i < WebGamepad.gamepads.length; i++) {
+          var gamepad = WebGamepad.gamepads[i];
+          if(gamepad) WebGamepad.trigger('disconnected', gamepad);
+        }
+      });
+
     }
 
     // 实体手柄支持
