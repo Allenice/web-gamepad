@@ -21,7 +21,6 @@ define([
     init: function () {
       var _this = this;
 
-
       this._cacheDom();
       this._bindEvent();
 
@@ -174,7 +173,7 @@ define([
       this.stickOffset = this.$rightStick.width() * 0.4 || 50;
 
       // 设置根元素的字体大小 (width:360px = 100%) 设计分比率的一半
-      $('html,body').css('font-size', (gamepadWidth / designResolution.width / 2 * 100) + '%');
+      $('html,body').css('font-size', (gamepadHeight / (designResolution.height / 2) * 100) + '%');
 
     }
   };

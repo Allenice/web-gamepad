@@ -83,7 +83,7 @@ define('app/WebGamepad',[
 
   // 手柄对象
   WebGamepad.gamepad = (function () {
-    var id = 'WEB GAMEPAD (version: 0.0.1)';
+    var id = 'WEB GAMEPAD (version: 0.1.1)';
     // 初始化按钮的值
     var buttons = [],
         index = parseInt(sessionStorage.getItem(uid)) || -1;
@@ -120,6 +120,12 @@ define('app/WebGamepad',[
   WebGamepad.connect = function () {
     var socket = WebGamepad.socket = io.connect();
 
+    function showError(msg) {
+      sessionStorage.removeItem(uid);
+      $('#tips').html(msg).show();
+      $('#gamepad').hide();
+    }
+
     socket.on('server-connected', function () {
       socket.emit('connected', {uid: uid, gamepad: WebGamepad.gamepad});
     });
@@ -128,20 +134,23 @@ define('app/WebGamepad',[
     socket.on('index-created', function (data) {
       WebGamepad.gamepad.index = data.index;
       WebGamepad.gamepad.id = WebGamepad.gamepad.id + '(index: '+ data.index +')';
-      sessionStorage.setItem(uid, data.index)
+      sessionStorage.setItem(uid, data.index);
       console.log('index-created', data);
     });
 
     socket.on('game-disconnected', function () {
-      sessionStorage.removeItem(uid);
-      $('#tips').html('游戏连接失败，请刷新页面重新连接！').show();
-      $('#gamepad').hide();
+      showError('游戏连接失败，请重新扫描二维码');
     });
     
     socket.on('game-not-found', function () {
-      $('#tips').html('游戏连接失败，找不到游戏！').show();
-      $('#gamepad').hide();
+      showError('游戏不存在，请重新扫描二维码');
     });
+
+    // TODO: 这个事件一直没有触发，不知道是怎么回事
+    socket.on('disconnect', function () {
+      showError('服务器连接已断开');
+    });
+
   };
 
   // 更新手柄状态
@@ -174,7 +183,6 @@ define('app/app',[
 
     init: function () {
       var _this = this;
-
 
       this._cacheDom();
       this._bindEvent();
@@ -327,8 +335,9 @@ define('app/app',[
       // 更新摇杆能移动的最大距离
       this.stickOffset = this.$rightStick.width() * 0.4 || 50;
 
-      // 设置根元素的字体大小 (height:360px = 100%)
-      $('html,body').css('font-size', (gamepadHeight / 360 * 100) + '%');
+      // 设置根元素的字体大小 (width:360px = 100%) 设计分比率的一半
+      $('html,body').css('font-size', (gamepadHeight / (designResolution.height / 2) * 100) + '%');
+
     }
   };
 
