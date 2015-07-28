@@ -48,6 +48,7 @@ define([
     // 初始化按钮的值
     var buttons = [],
         index = parseInt(sessionStorage.getItem(uid)) || -1;
+
     for(var i = 0; i < WebGamepad.TYPICAL_BUTTON_COUNT; i++) {
       buttons.push(0);
     }

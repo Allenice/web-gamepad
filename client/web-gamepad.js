@@ -189,6 +189,7 @@
     return this;
   };
 
+  // 使用 WebGamepad 对象具有事件功能
   utils.extend(WebGamepad, Events);
 
   /*
@@ -202,7 +203,7 @@
   utils.extend(GamepadButon.prototype, Events, {
     value: 0,
     oldValue: 0,
-    gamepad: null,
+    gamepad: null, // 所属手柄
 
     setValue: function (value) {
       this.oldValue = this.value;
@@ -289,8 +290,10 @@
       this.timestamp = gamepadData.timestamp;
 
       this.buttons.forEach(function (button, index) {
-        var btn = gamepadData.buttons[index],
-            value = typeof btn === 'object' ? btn.value : btn;
+        var btn = gamepadData.buttons[index];
+
+        // 兼容某些实体手柄，button 的值是：{value: 0|false, pressed: true|false}
+        var value = typeof btn === 'object' ? btn.value : btn;
 
         if(typeof value != 'undefined') {
           button.setValue(value);
@@ -371,6 +374,7 @@
 
       onGamepadDisconnected(event.gamepad);
 
+      // 检查还有没有实体手柄连接，没有的话就停止轮询
       for(var i = 0; i < gamepads.length; i++) {
         if(gamepads[i]) {
           flag = false;
@@ -418,12 +422,14 @@
       for(var i = 0; i < rawGamepads.length; i++) {
         var data = rawGamepads[i];
 
-        // 如果是 undefined, 继续检查下一个
         if(!data) {
+
+          // 如果是 undefined, 而且 WebGamepad.gamepads 存在这个手柄，表示现在已经断开连接
           if(WebGamepad.gamepads[i]) {
             onGamepadDisconnected(WebGamepad.gamepads[i]);
 
           }
+          // 继续检查下一个
           continue;
         };
 
