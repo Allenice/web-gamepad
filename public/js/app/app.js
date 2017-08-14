@@ -54,7 +54,7 @@ define([
       }
 
       // 浏览器大小改变的时候，重新计算布局
-      $(window).on('resize', function () {
+      $(window).on('resize orientationchange DOMContentLoaded', function () {
         _this._layout();
       });
 

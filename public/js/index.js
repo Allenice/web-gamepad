@@ -87,6 +87,7 @@ define('app/WebGamepad',[
     // 初始化按钮的值
     var buttons = [],
         index = parseInt(sessionStorage.getItem(uid)) || -1;
+
     for(var i = 0; i < WebGamepad.TYPICAL_BUTTON_COUNT; i++) {
       buttons.push(0);
     }
@@ -217,7 +218,7 @@ define('app/app',[
       }
 
       // 浏览器大小改变的时候，重新计算布局
-      $(window).on('resize', function () {
+      $(window).on('resize orientationchange DOMContentLoaded', function () {
         _this._layout();
       });
 
